@@ -74,13 +74,6 @@ npm run build
 
 ---
 
-## 👨‍💻 Author
-
-- Name: Aloy Azide
-- GitHub: https://github.com/your-username
-
----
-
 ## ⭐ Support
 
 Give a star ⭐ if you like this project!
