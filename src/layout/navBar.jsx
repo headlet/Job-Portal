@@ -1,24 +1,84 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import Logo from '../assets/Logo.png'
-function NavBar(){
-return (
+import Logo from "../assets/Logo.png";
+
+function NavBar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const linkClass = ({ isActive }) =>
+    `px-3 py-1 rounded-lg transition-colors duration-200 hover:bg-[#309689] ${
+      isActive ? "bg-[#1f7a6d]" : ""
+    }`;
+
+  return (
     <header className="bg-black text-white">
-        <nav className="flex justify-between gap-6 py-4 px-10 items-center">
-           <NavLink to='/' className="flex gap-2 justify-center items-center">
-            <img src={Logo} alt="Logo"  className="w-6 h-6"/>
-            <h2 className="text-lg font-semibold">Job Portal</h2>
-           </NavLink>
+      <nav className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
+        
+        {/* Logo */}
+        <NavLink to="/" className="flex items-center gap-2">
+          <img src={Logo} alt="Logo" className="w-6 h-6" />
+          <h2 className="text-lg font-semibold">Job Portal</h2>
+        </NavLink>
 
-           <div className="flex justify-evenly items-center gap-7">
-            <NavLink to='/' className={({isActive}) => `p-1 rounded-lg hover:bg-[#309689] ${isActive ? 'bg-[#309689]' : ''}`}>Home</NavLink>
-            <NavLink to='/about' className={({isActive}) => `p-1 rounded-lg hover:bg-[#309689] ${isActive ? 'bg-[#309689]' : ''}`}> About</NavLink>
-            <NavLink to='/contact' className={({isActive}) => `p-1 rounded-lg hover:bg-[#309689] ${isActive ? 'bg-[#309689]' : ''}`}>Contact</NavLink>
-            <NavLink to='/jobs' className={({isActive}) => `p-1 rounded-lg hover:bg-[#309689] ${isActive ? 'bg-[#309689]' : ''}`}>Jobs</NavLink>
-           </div>
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center gap-7">
+          <NavLink to="/" className={linkClass}>Home</NavLink>
+          <NavLink to="/about" className={linkClass}>About</NavLink>
+          <NavLink to="/contact" className={linkClass}>Contact</NavLink>
+          <NavLink to="/jobs" className={linkClass}>Jobs</NavLink>
+        </div>
 
-           <NavLink to='/login' className={({isActive}) => `bg-[#309689] px-4 py-2 text-white rounded-lg hover:bg-green-700 ${isActive ? ' bg-green-700' : ''}`}>Login</NavLink>
-        </nav>
+        {/* Desktop Login */}
+        <NavLink
+          to="/login"
+          className="hidden md:block bg-[#309689] px-4 py-2 rounded-lg hover:bg-green-700"
+        >
+          Login
+        </NavLink>
+
+        {/* Mobile Hamburger */}
+        <button
+          className="md:hidden text-2xl"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          ☰
+        </button>
+      </nav>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden bg-black border-t border-gray-800">
+          <div className="flex flex-col p-4 gap-3">
+            
+            <NavLink to="/" className={linkClass} onClick={() => setIsOpen(false)}>
+              Home
+            </NavLink>
+
+            <NavLink to="/about" className={linkClass} onClick={() => setIsOpen(false)}>
+              About
+            </NavLink>
+
+            <NavLink to="/contact" className={linkClass} onClick={() => setIsOpen(false)}>
+              Contact
+            </NavLink>
+
+            <NavLink to="/jobs" className={linkClass} onClick={() => setIsOpen(false)}>
+              Jobs
+            </NavLink>
+
+            <NavLink
+              to="/login"
+              className="bg-[#309689] px-4 py-2 rounded-lg text-center hover:bg-green-700"
+              onClick={() => setIsOpen(false)}
+            >
+              Login
+            </NavLink>
+
+          </div>
+        </div>
+      )}
     </header>
-);
+  );
 }
+
 export default NavBar;
