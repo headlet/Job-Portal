@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Logo from '../assets/Logo.png'
 function NavBar(){
 return (
@@ -9,14 +9,14 @@ return (
             <h2 className="text-lg font-semibold">Job Portal</h2>
            </NavLink>
 
-           <div className="flex justify-evenly gap-7">
-            <NavLink to='/'>Home</NavLink>
-            <NavLink to='/about'> About</NavLink>
-            <NavLink to='/contact'>Contact</NavLink>
-            <NavLink to='/jobs'>Jobs</NavLink>
+           <div className="flex justify-evenly items-center gap-7">
+            <NavLink to='/' className={({isActive}) => `p-1 rounded-lg hover:bg-[#309689] ${isActive ? 'bg-[#309689]' : ''}`}>Home</NavLink>
+            <NavLink to='/about' className={({isActive}) => `p-1 rounded-lg hover:bg-[#309689] ${isActive ? 'bg-[#309689]' : ''}`}> About</NavLink>
+            <NavLink to='/contact' className={({isActive}) => `p-1 rounded-lg hover:bg-[#309689] ${isActive ? 'bg-[#309689]' : ''}`}>Contact</NavLink>
+            <NavLink to='/jobs' className={({isActive}) => `p-1 rounded-lg hover:bg-[#309689] ${isActive ? 'bg-[#309689]' : ''}`}>Jobs</NavLink>
            </div>
 
-           <NavLink className="bg-[#309689] px-4 py-2 text-white rounded-lg">Login</NavLink>
+           <NavLink to='/login' className={({isActive}) => `bg-[#309689] px-4 py-2 text-white rounded-lg hover:bg-green-700 ${isActive ? ' bg-green-700' : ''}`}>Login</NavLink>
         </nav>
     </header>
 );
