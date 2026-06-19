@@ -12,7 +12,7 @@ function NavBar() {
 
   return (
     <header className="bg-black text-white">
-      <nav className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
+      <nav className="max-w-7xl mx-auto flex justify-between items-center py-4 px-3 md:px-3 lg:px-1 ">
         
         {/* Logo */}
         <NavLink to="/" className="flex items-center gap-2">
