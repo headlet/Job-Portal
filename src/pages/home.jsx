@@ -9,8 +9,10 @@ import {
   FaChevronRight,
   FaStar,
   FaQuoteLeft,
+  FaMoneyBillWave,
 } from "react-icons/fa";
 import { FaUsers, FaArrowRightLong } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 function Home() {
   const [search, setSearch] = useState("");
@@ -112,7 +114,7 @@ function Home() {
   ];
 
   return (
-    <section className="w-full flex flex-col items-center justify-center  text-white">
+    <section className="w-full flex flex-col items-center justify-center  text-white bg-[#f4f7f6]">
       {/* =========================================================
           1. HERO MAIN WRAPPER CONTAINER
          ========================================================= */}
@@ -241,65 +243,75 @@ function Home() {
               expertise.
             </p>
           </div>
-          <button className="text-[#309689] font-medium text-sm flex items-center gap-1 hover:underline">
+          <Link to='/jobs' className="text-[#309689] font-medium text-sm flex items-center gap-1 hover:underline">
             View all <FaChevronRight className="text-xs" />
-          </button>
+          </Link>
         </div>
 
         {/* Jobs Feed Stack */}
         <div className="flex flex-col gap-4">
-          {recentJobs.map((job) => (
-            <div
-              key={job.id}
-              className="bg-[#0e1012] border border-neutral-900 rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-neutral-800 transition-all group"
-            >
-              <div className="flex items-start gap-4">
-                <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center text-[#309689] ${job.logoBg} border border-[#309689]/20 font-bold shrink-0 text-lg`}
-                >
-                  <FaBriefcase className="text-base" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 flex-wrap mb-1.5">
-                    <h3 className="text-base font-semibold text-white group-hover:text-[#309689] transition-colors">
+          <div className="flex flex-col gap-4">
+            {recentJobs.map((job) => (
+              <div
+                key={job.id}
+                className="bg-white border border-neutral-100 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow relative group"
+              >
+                {/* Bookmark Icon */}
+                <button className="absolute top-6 right-6 text-neutral-400 hover:text-[#309689]">
+                  <FaRegBookmark />
+                </button>
+
+                {/* Top Badge */}
+                <span className="inline-block bg-[#309689]/10 text-[#309689] text-[10px] font-bold px-2.5 py-1 rounded mb-4">
+                  {job.posted}
+                </span>
+
+                <div className="flex flex-col sm:flex-row gap-5">
+                  {/* Abstract Logo */}
+                  <div
+                    className={`w-12 h-12 ${job.logoBg} rounded-full flex items-center justify-center text-white shrink-0 shadow-inner`}
+                  >
+                    <FaBriefcase className="text-lg" />
+                  </div>
+
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-neutral-800 group-hover:text-[#309689] transition-colors mb-1">
                       {job.title}
                     </h3>
-                    <span className="bg-[#16191c] text-neutral-400 text-[11px] font-medium px-2 py-0.5 rounded-full border border-neutral-800">
-                      {job.type}
-                    </span>
+                    <p className="text-sm text-neutral-500 mb-4">
+                      {job.company}
+                    </p>
+
+                    {/* Meta Info Row */}
+                    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-neutral-500 font-medium">
+                      <span className="flex items-center gap-1.5">
+                        <FaBriefcase className="text-[#309689]" />{" "}
+                        {job.category}
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <FaRegClock className="text-[#309689]" /> {job.type}
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <FaMoneyBillWave className="text-[#309689]" />{" "}
+                        {job.salary}
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <FaMapMarkerAlt className="text-[#309689]" />{" "}
+                        {job.location}
+                      </span>
+                    </div>
                   </div>
 
-                  {/* Meta Details Row */}
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-neutral-500 font-medium">
-                    <span className="flex items-center gap-1">
-                      <FaBuilding className="text-[10px]" /> {job.company}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <FaMapMarkerAlt className="text-[10px]" /> {job.location}
-                    </span>
-                    <span className="text-[#309689] font-semibold">
-                      {job.salary}
-                    </span>
-                    <span className="flex items-center gap-1 text-neutral-600">
-                      <FaRegClock className="text-[10px]" /> {job.posted}
-                    </span>
+                  {/* Apply Button */}
+                  <div className="flex items-end sm:items-center mt-4 sm:mt-0 shrink-0">
+                    <button className="bg-[#309689] hover:bg-teal-700 text-white text-xs font-semibold px-6 py-2.5 rounded-lg transition-colors">
+                      Job Details
+                    </button>
                   </div>
                 </div>
               </div>
-
-              <div className="flex items-center gap-3 self-end md:self-center">
-                <button
-                  className="p-3 bg-[#16191c] text-neutral-400 hover:text-white rounded-xl border border-neutral-800 transition-colors"
-                  aria-label="Bookmark job"
-                >
-                  <FaRegBookmark className="text-sm" />
-                </button>
-                <button className="bg-[#1f2327] hover:bg-[#309689] text-white font-semibold text-xs px-5 py-3 rounded-xl transition-all whitespace-nowrap">
-                  Apply Now
-                </button>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
