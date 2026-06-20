@@ -1,5 +1,5 @@
 function Contact(){
-    return (<>hdfjsa</>);
+    return (<></>);
 }
 
 export default Contact;
