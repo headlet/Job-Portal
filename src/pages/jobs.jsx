@@ -86,8 +86,8 @@ function Jobs() {
     <div className="w-full min-h-screen bg-[#f4f7f6] text-neutral-800 font-sans">
       
       {/* 1. DARK PAGE HEADER */}
-      <div className="w-full bg-black text-white py-20 px-6 flex flex-col items-center justify-center border-t border-neutral-800">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Jobs</h1>
+     <div className="w-full bg-[#0a0a0a] text-white py-16 flex items-center justify-center">
+        <h1 className="text-4xl font-bold tracking-tight">Jobs</h1>
       </div>
 
       {/* 2. MAIN CONTENT AREA (Sidebar + Job List) */}

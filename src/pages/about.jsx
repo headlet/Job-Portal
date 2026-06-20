@@ -160,7 +160,7 @@ function About() {
         {/* 7. WE ARE ONLY WORKING WITH THE BEST */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
           {/* Left Images Collage */}
-          <div className="grid grid-cols-2 gap-4 h-[500px]">
+          <div className="grid grid-cols-1  lg:grid-cols-2 gap-4 lg:h-[500px]">
             <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Office 1" className="w-full h-full object-cover rounded-2xl" />
             <div className="grid grid-rows-2 gap-4 h-full">
               <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Office 2" className="w-full h-full object-cover rounded-2xl" />
