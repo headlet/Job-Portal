@@ -1,51 +1,57 @@
 import { Link } from "react-router-dom";
 
-function Login() {
+function Signup() {
   return (
     <div className="min-h-screen bg-neutral-100 flex items-center justify-center p-4 md:p-8">
-      {/* To get the EXACT wavy abstract look on the left, you will need the specific graphic file. 
-        I have designed this structure to accommodate that. 
-      */}
+      {/* Container matching Login design */}
       <div className="w-full max-w-[1000px] bg-white rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] overflow-hidden grid md:grid-cols-2">
         
         {/* ============= LEFT SIDE: BRAND VISUAL ============= */}
         <div className="hidden md:flex flex-col justify-between p-12 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-600 text-white relative">
           
-          {/* You can replace this placeholder content with an image/SVG 
-            of the abstract design from image_5.png. 
-          */}
           <div className="relative z-10 flex flex-col justify-center h-full">
-            <h1 className="text-4xl font-bold mb-6">Welcome Page</h1>
-            <p className="text-blue-100 text-lg">Sign In To Your Account</p>
+            <h1 className="text-4xl font-bold mb-6">Join Us</h1>
+            <p className="text-blue-100 text-lg">Create your professional account and discover thousands of job opportunities.</p>
           </div>
           
           <div className="relative z-10 text-sm opacity-60">
-            WWW.JobPortal.com
+            WWW.JobPortal.COM
           </div>
-
-          {/* Decorative shapes placeholder to mimic image 5 */}
+          
           <div className="absolute top-1/4 left-1/4 w-12 h-12 bg-blue-500 rounded-full blur-xl opacity-70"></div>
           <div className="absolute bottom-1/4 right-1/4 w-12 h-12 bg-blue-500 rounded-full blur-xl opacity-70"></div>
         </div>
 
-        {/* ============= RIGHT SIDE: LOGIN FORM ============= */}
+        {/* ============= RIGHT SIDE: SIGNUP FORM ============= */}
         <div className="p-8 md:p-16 flex flex-col justify-center">
           
           <div className="mb-10 text-center md:text-left">
-            <h2 className="text-2xl font-bold text-gray-900 mb-1">Hello !</h2>
-            <p className="text-purple-600 font-medium text-lg">Good Morning</p>
-            <h3 className="mt-8 text-xl font-semibold">Login Your Account</h3>
+            <h2 className="text-2xl font-bold text-gray-900 mb-1">Welcome !</h2>
+            <p className="text-purple-600 font-medium text-lg">Get started now</p>
+            <h3 className="mt-8 text-xl font-semibold">Create Account</h3>
           </div>
 
           <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
             
+            {/* Underlined Full Name Field */}
+            <div className="space-y-1">
+              <label className="text-sm font-semibold text-gray-400">Full Name</label>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="John Doe"
+                  className="w-full pb-3 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-blue-600 transition-all bg-transparent"
+                />
+              </div>
+            </div>
+
             {/* Underlined Email Field */}
             <div className="space-y-1">
               <label className="text-sm font-semibold text-gray-400">Email Address</label>
               <div className="relative">
                 <input
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="name@example.com"
                   className="w-full pb-3 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-blue-600 transition-all bg-transparent"
                 />
               </div>
@@ -63,12 +69,22 @@ function Login() {
               </div>
             </div>
 
-            {/* Remember/Forgot Row */}
-            <div className="flex justify-between items-center text-sm">
-              <label className="flex items-center gap-2 text-gray-600">
-                <input type="checkbox" className="rounded border-gray-300 text-blue-600" /> Remember
-              </label>
-              <button type="button" className="text-gray-500 hover:text-blue-600 transition-colors">Forgot Password?</button>
+            {/* Underlined Confirm Password Field */}
+            <div className="space-y-1">
+              <label className="text-sm font-semibold text-gray-400">Confirm Password</label>
+              <div className="relative">
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  className="w-full pb-3 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-blue-600 transition-all bg-transparent"
+                />
+              </div>
+            </div>
+
+            {/* Terms Checkbox */}
+            <div className="flex items-start gap-2 text-sm text-gray-600 mt-6">
+              <input type="checkbox" className="rounded border-gray-300 text-blue-600 mt-1" />
+              <p>I agree to the <a href="#" className="text-blue-600 hover:underline">Terms of Service</a> and <a href="#" className="text-blue-600 hover:underline">Privacy Policy</a>.</p>
             </div>
 
             {/* Purple Gradient Submit Button */}
@@ -76,14 +92,15 @@ function Login() {
               type="submit"
               className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3.5 rounded-lg font-bold transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/30"
             >
-              SUBMIT
+              SIGN UP
             </button>
           </form>
 
-          {/* Create Account Link */}
+          {/* Login Link */}
           <div className="mt-8 pt-6 border-t border-gray-100 text-center">
-            <Link to="/Signup" className="font-bold text-gray-800 hover:text-blue-600 transition-colors">
-              Create Account
+            <span className="text-gray-500 text-sm">Already have an account? </span>
+            <Link to="/login" className="font-bold text-blue-600 hover:underline transition-colors">
+              Login
             </Link>
           </div>
         </div>
@@ -92,4 +109,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;
