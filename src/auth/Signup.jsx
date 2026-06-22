@@ -7,7 +7,7 @@ function Signup() {
       <div className="w-full max-w-[1000px] bg-white rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] overflow-hidden grid md:grid-cols-2">
         
         {/* ============= LEFT SIDE: BRAND VISUAL ============= */}
-        <div className="hidden md:flex flex-col justify-between p-12 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-600 text-white relative">
+        <div className="hidden md:flex flex-col justify-between p-12 bg-black text-white relative">
           
           <div className="relative z-10 flex flex-col justify-center h-full">
             <h1 className="text-4xl font-bold mb-6">Join Us</h1>
@@ -27,7 +27,7 @@ function Signup() {
           
           <div className="mb-10 text-center md:text-left">
             <h2 className="text-2xl font-bold text-gray-900 mb-1">Welcome !</h2>
-            <p className="text-purple-600 font-medium text-lg">Get started now</p>
+            <p className="text-[#309689] font-medium text-lg">Get started now</p>
             <h3 className="mt-8 text-xl font-semibold">Create Account</h3>
           </div>
 
@@ -90,7 +90,7 @@ function Signup() {
             {/* Purple Gradient Submit Button */}
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3.5 rounded-lg font-bold transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/30"
+              className="w-full bg-[#309689] text-white py-3.5 rounded-lg font-bold transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/30"
             >
               SIGN UP
             </button>
