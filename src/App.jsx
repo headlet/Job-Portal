@@ -20,6 +20,8 @@ function App() {
           ...doc.data(),
         }));
 
+        jobsArray.sort((a, b) => b.createdAt - a.createdAt);
+
         setJobs(jobsArray);
       } catch (error) {
         console.error("Error fetching jobs:", error);
@@ -33,7 +35,7 @@ function App() {
     <>
       <NavBar />
       <main>
-        <AppRoutes  jobs={jobs} />
+        <AppRoutes jobs={jobs} />
       </main>
       <Footer />
     </>
