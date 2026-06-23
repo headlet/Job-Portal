@@ -16,9 +16,6 @@ import {
 function JobPost() {
   const [activeTab, setActiveTab] = useState("basics");
 
-  // ==========================================
-  // JOB POSTING CORE FORM STATES
-  // ==========================================
   const [jobDetails, setJobDetails] = useState({
     title: "",
     company: "Pixel Perfect Solutions", // Mock logged-in employer company

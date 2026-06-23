@@ -1,13 +1,22 @@
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { auth } from "../firebase.config";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ email, password });
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("user logged in");
+      window.location.href = "/profile";
+    } catch (error) {
+      console.log(error.code);
+      console.log(error.message);
+    }
   };
 
   return (
