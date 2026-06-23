@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUser, FaBriefcase } from "react-icons/fa";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../firebase.config";
+import { doc, setDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -18,10 +22,25 @@ function Signup() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-
-    console.log(formData);
+    try {
+      await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      const user = auth.currentUser;
+      console.log(user);
+      if(user){
+        await setDoc(doc(db, 'Users', user.uid), {
+          email: user.email,
+          fullName: formData.fullName,
+          role: formData.role
+        })
+      }
+     toast.success('User Registered Successfully!!', {
+      position: "top-right"
+     });
+    } catch (error) {
+      console.log("There is issue in something" + error.message);
+    }
   };
 
   return (
@@ -55,7 +74,7 @@ function Signup() {
             <h3 className="mt-6 text-xl font-semibold">Create Account</h3>
           </div>
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={handleSignUp}>
             <div className="space-y-2">
               <label className="text-sm font-semibold text-gray-400 block">
                 Join as a
@@ -87,7 +106,7 @@ function Signup() {
 
                 <label
                   className={`flex items-center justify-center gap-2 p-3.5 border rounded-xl cursor-pointer transition-all duration-200 select-none ${
-                   formData.role === "employer"
+                    formData.role === "employer"
                       ? "border-[#309689] bg-[#309689]/5 text-[#309689] shadow-sm font-bold"
                       : "border-gray-200 text-gray-500 hover:border-gray-300 font-medium"
                   }`}
