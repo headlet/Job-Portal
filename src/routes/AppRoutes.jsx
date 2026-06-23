@@ -8,13 +8,13 @@ import Signup from "../auth/Signup";
 // import Signup from "../pages/Auth/signUp";
 // import Profile from "../pages/Profile";
 
-function AppRoutes() {
+function AppRoutes({jobs}) {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Home jobs={jobs}/>} />
       <Route path="/about" element={<About/>}/>
       <Route path="/contact" element={<Contact/>}/>
-      <Route path="/jobs" element={<Jobs/>}/>
+      <Route path="/jobs" element={<Jobs jobs={jobs}/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/signup" element={<Signup/>}/>
     </Routes>

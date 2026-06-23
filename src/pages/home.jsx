@@ -14,7 +14,7 @@ import {
 import { FaUsers, FaArrowRightLong } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-function Home() {
+function Home({ jobs }) {
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState("");
   const [category, setCategory] = useState("");
@@ -23,60 +23,6 @@ function Home() {
     e.preventDefault();
     console.log({ search, location, category });
   };
-
-  // Mock Data from the Figma mockup layout
-  const recentJobs = [
-    {
-      id: 1,
-      title: "Forward Security Director",
-      company: "Figma.guru",
-      type: "Full time",
-      salary: "$40k - $52k",
-      location: "Kathmandu, Nepal",
-      posted: "Posted 2 hours ago",
-      logoBg: "bg-teal-500/10",
-    },
-    {
-      id: 2,
-      title: "Regional Creative Facilitator",
-      company: "Figma.guru",
-      type: "Part time",
-      salary: "$32k - $48k",
-      location: "Lalitpur, Nepal",
-      posted: "Posted 5 hours ago",
-      logoBg: "bg-orange-500/10",
-    },
-    {
-      id: 3,
-      title: "Internal Integration Planner",
-      company: "Figma.guru",
-      type: "Full time",
-      salary: "$45k - $60k",
-      location: "Remote",
-      posted: "Posted 1 day ago",
-      logoBg: "bg-purple-500/10",
-    },
-    {
-      id: 4,
-      title: "District Intranet Director",
-      company: "Figma.guru",
-      type: "Contract",
-      salary: "$50k - $70k",
-      location: "Bhaktapur, Nepal",
-      posted: "Posted 2 days ago",
-      logoBg: "bg-blue-500/10",
-    },
-    {
-      id: 5,
-      title: "Corporate Factors Facilitator",
-      company: "Figma.guru",
-      type: "Full time",
-      salary: "$38k - $50k",
-      location: "Kathmandu, Nepal",
-      posted: "Posted 3 days ago",
-      logoBg: "bg-pink-500/10",
-    },
-  ];
 
   const categories = [
     { name: "Agriculture", jobs: "1.2k+ jobs", icon: <CornIcon /> },
@@ -251,7 +197,7 @@ function Home() {
         {/* Jobs Feed Stack */}
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
-            {recentJobs.map((job) => (
+            {jobs.map((job) => (
               <div
                 key={job.id}
                 className="bg-white border border-neutral-100 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow relative group"

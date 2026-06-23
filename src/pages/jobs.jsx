@@ -11,68 +11,9 @@ import {
 } from "react-icons/fa";
 import { SiTesla, SiMcdonalds } from "react-icons/si";
 
-function Jobs() {
+function Jobs({jobs}) {
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState("");
-
-  // Mock Data for the Job Feed
-  const jobListings = [
-    {
-      id: 1,
-      posted: "10 min ago",
-      title: "Forward Security Director",
-      company: "Daugh, Schuppe and Schulist Co",
-      category: "Hotels & Tourism",
-      type: "Full time",
-      salary: "$40000-$42000",
-      location: "New York, USA",
-      logoBg: "bg-red-500",
-    },
-    {
-      id: 2,
-      posted: "12 min ago",
-      title: "Regional Creative Facilitator",
-      company: "Wiza - Becker Co",
-      category: "Media",
-      type: "Part time",
-      salary: "$28000-$32000",
-      location: "Los Angeles, USA",
-      logoBg: "bg-orange-500",
-    },
-    {
-      id: 3,
-      posted: "15 min ago",
-      title: "Internal Integration Planner",
-      company: "Hauck, Quigley and Rool Inc",
-      category: "Construction",
-      type: "Full time",
-      salary: "$48000-$50000",
-      location: "Texas, USA",
-      logoBg: "bg-blue-500",
-    },
-    {
-      id: 4,
-      posted: "24 min ago",
-      title: "District Intranet Director",
-      company: "VonRueden - Weber Co",
-      category: "Commerce",
-      type: "Full time",
-      salary: "$42000-$48000",
-      location: "Florida, USA",
-      logoBg: "bg-purple-500",
-    },
-    {
-      id: 5,
-      posted: "26 min ago",
-      title: "Corporate Tactics Facilitator",
-      company: "Cormier, Turner and Flackey Inc",
-      category: "Commerce",
-      type: "Full time",
-      salary: "$80000-$90000",
-      location: "Boston, USA",
-      logoBg: "bg-teal-500",
-    }
-  ];
 
   // Mock Data for Top Companies
   const topCompanies = [
@@ -208,7 +149,7 @@ function Jobs() {
 
           {/* Job Feed */}
           <div className="flex flex-col gap-4">
-            {jobListings.map((job) => (
+            {jobs.map((job) => (
               <div key={job.id} className="bg-white border border-neutral-100 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow relative group">
                 
                 {/* Bookmark Icon */}

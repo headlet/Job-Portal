@@ -95,7 +95,7 @@ function Login() {
             </span>
             <Link
               to="/Signup"
-              className="font-bold text-blue-600 hover:underline transition-colors"
+              className="font-bold text-[#309689] hover:underline transition-colors"
             >
               Sign Up
             </Link>

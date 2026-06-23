@@ -1,6 +1,11 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { FaUser, FaBriefcase } from "react-icons/fa";
 
 function Signup() {
+  // Track state for 'seeker' (Search for job) or 'employer' (Find a talent)
+  const [role, setRole] = useState("seeker");
+
   return (
     <div className="min-h-screen bg-neutral-100 flex items-center justify-center p-4 md:p-8">
       {/* Container matching Login design */}
@@ -8,7 +13,6 @@ function Signup() {
         
         {/* ============= LEFT SIDE: BRAND VISUAL ============= */}
         <div className="hidden md:flex flex-col justify-between p-12 bg-black text-white relative">
-          
           <div className="relative z-10 flex flex-col justify-center h-full">
             <h1 className="text-4xl font-bold mb-6">Join Us</h1>
             <p className="text-blue-100 text-lg">Create your professional account and discover thousands of job opportunities.</p>
@@ -23,16 +27,60 @@ function Signup() {
         </div>
 
         {/* ============= RIGHT SIDE: SIGNUP FORM ============= */}
-        <div className="p-8 md:p-16 flex flex-col justify-center">
+        <div className="p-8 flex flex-col justify-center">
           
-          <div className="mb-10 text-center md:text-left">
+          <div className="mb-8 text-center md:text-left">
             <h2 className="text-2xl font-bold text-gray-900 mb-1">Welcome !</h2>
             <p className="text-[#309689] font-medium text-lg">Get started now</p>
-            <h3 className="mt-8 text-xl font-semibold">Create Account</h3>
+            <h3 className="mt-6 text-xl font-semibold">Create Account</h3>
           </div>
 
-          <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
             
+            {/* Professional Radio Card Selector */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-gray-400 block">Join as a</label>
+              <div className="grid grid-cols-2 gap-3">
+                
+                {/* Option 1: Seeker */}
+                <label className={`flex items-center justify-center gap-2 p-3.5 border rounded-xl cursor-pointer transition-all duration-200 select-none ${
+                  role === "seeker" 
+                    ? "border-[#309689] bg-[#309689]/5 text-[#309689] shadow-sm font-bold" 
+                    : "border-gray-200 text-gray-500 hover:border-gray-300 font-medium"
+                }`}>
+                  <input
+                    type="radio"
+                    name="userRole"
+                    value="seeker"
+                    checked={role === "seeker"}
+                    onChange={() => setRole("seeker")}
+                    className="sr-only"
+                  />
+                  <FaUser className="text-sm" />
+                  <span className="text-sm">Search for job</span>
+                </label>
+
+                {/* Option 2: Employer */}
+                <label className={`flex items-center justify-center gap-2 p-3.5 border rounded-xl cursor-pointer transition-all duration-200 select-none ${
+                  role === "employer" 
+                    ? "border-[#309689] bg-[#309689]/5 text-[#309689] shadow-sm font-bold" 
+                    : "border-gray-200 text-gray-500 hover:border-gray-300 font-medium"
+                }`}>
+                  <input
+                    type="radio"
+                    name="userRole"
+                    value="employer"
+                    checked={role === "employer"}
+                    onChange={() => setRole("employer")}
+                    className="sr-only"
+                  />
+                  <FaBriefcase className="text-sm" />
+                  <span className="text-sm">Find a talent</span>
+                </label>
+
+              </div>
+            </div>
+
             {/* Underlined Full Name Field */}
             <div className="space-y-1">
               <label className="text-sm font-semibold text-gray-400">Full Name</label>
@@ -40,7 +88,7 @@ function Signup() {
                 <input
                   type="text"
                   placeholder="John Doe"
-                  className="w-full pb-3 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-blue-600 transition-all bg-transparent"
+                  className="w-full pb-3 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                 />
               </div>
             </div>
@@ -52,7 +100,7 @@ function Signup() {
                 <input
                   type="email"
                   placeholder="name@example.com"
-                  className="w-full pb-3 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-blue-600 transition-all bg-transparent"
+                  className="w-full pb-3 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                 />
               </div>
             </div>
@@ -64,7 +112,7 @@ function Signup() {
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className="w-full pb-3 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-blue-600 transition-all bg-transparent"
+                  className="w-full pb-3 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                 />
               </div>
             </div>
@@ -76,21 +124,21 @@ function Signup() {
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className="w-full pb-3 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-blue-600 transition-all bg-transparent"
+                  className="w-full pb-3 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                 />
               </div>
             </div>
 
             {/* Terms Checkbox */}
             <div className="flex items-start gap-2 text-sm text-gray-600 mt-6">
-              <input type="checkbox" className="rounded border-gray-300 text-blue-600 mt-1" />
-              <p>I agree to the <a href="#" className="text-blue-600 hover:underline">Terms of Service</a> and <a href="#" className="text-blue-600 hover:underline">Privacy Policy</a>.</p>
+              <input type="checkbox" className="rounded border-gray-300 text-[#309689] focus:ring-[#309689] mt-1" />
+              <p>I agree to the <a href="#" className="text-[#309689] hover:underline">Terms of Service</a> and <a href="#" className="text-[#309689] hover:underline">Privacy Policy</a>.</p>
             </div>
 
-            {/* Purple Gradient Submit Button */}
+            {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-[#309689] text-white py-3.5 rounded-lg font-bold transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/30"
+              className="w-full bg-[#309689] text-white py-3.5 rounded-lg font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#309689]/20"
             >
               SIGN UP
             </button>
@@ -99,7 +147,7 @@ function Signup() {
           {/* Login Link */}
           <div className="mt-8 pt-6 border-t border-gray-100 text-center">
             <span className="text-gray-500 text-sm">Already have an account? </span>
-            <Link to="/login" className="font-bold text-blue-600 hover:underline transition-colors">
+            <Link to="/login" className="font-bold text-[#309689] hover:underline transition-colors">
               Login
             </Link>
           </div>
