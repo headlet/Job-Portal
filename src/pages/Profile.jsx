@@ -24,6 +24,7 @@ function Profile() {
     "Firebase",
   ]);
   const [newSkill, setNewSkill] = useState("");
+  const [userDetails, setUserDetails] = useState(null);
 
   const handleAddSkill = (e) => {
     e.preventDefault();
@@ -37,7 +38,11 @@ function Profile() {
     setSkills(skills.filter((_, index) => index !== indexToRemove));
   };
 
-  const [userDetails, setUserDetails] = useState(null);
+  const [formData, setFormData] = useState({});
+  const handleFormData = (e) => {
+    e.preventDefault();
+    setFormData({...formData,[e.target.name]: e.target.value});
+  };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -67,7 +72,7 @@ function Profile() {
     try {
       await auth.signOut();
       window.location.href = "/login";
-      console.log('User logged out successfully')
+      console.log("User logged out successfully");
     } catch (error) {
       console.error("error logging out", error.message);
     }
@@ -81,9 +86,9 @@ function Profile() {
     );
   }
 
- if (!userDetails) {
-  return <Navigate to="/login" replace />;
-}
+  if (!userDetails) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-neutral-100 flex items-center justify-center p-4 md:p-8">
@@ -122,48 +127,43 @@ function Profile() {
               </button>
 
               <button
-                onClick={() => setActiveTab("experience")}
+                onClick={() => setActiveTab("Jobs")}
                 className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                  activeTab === "experience"
+                  activeTab === "Jobs"
                     ? "bg-[#309689] text-white shadow-lg shadow-[#309689]/20"
                     : "text-neutral-400 hover:bg-neutral-900 hover:text-white"
                 }`}
               >
-                <FaBriefcase className="text-base" /> Experience & Education
-              </button>
-
-              <button
-                onClick={() => setActiveTab("skills")}
-                className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                  activeTab === "skills"
-                    ? "bg-[#309689] text-white shadow-lg shadow-[#309689]/20"
-                    : "text-neutral-400 hover:bg-neutral-900 hover:text-white"
-                }`}
-              >
-                <FaGraduationCap className="text-base" /> Resume & Skills
+                <FaBriefcase className="text-base" /> Jobs
               </button>
             </nav>
           </div>
 
-          <button className="bg-[#309689] w-fit p-2 text-center rounded-2xl hover:bg-white hover:text-black" onClick={handleLogout}>LogOut</button>
+          <button
+            className="bg-[#309689] w-fit p-2 text-center rounded-2xl hover:bg-white hover:text-black"
+            onClick={handleLogout}
+          >
+            LogOut
+          </button>
           <div className="absolute top-10 left-10 w-12 h-12 bg-blue-500 rounded-full blur-xl opacity-40"></div>
           <div className="absolute bottom-20 right-10 w-16 h-16 bg-purple-500 rounded-full blur-2xl opacity-30"></div>
         </div>
 
         <div className="p-8 md:p-12 md:col-span-2 flex flex-col justify-between min-h-[600px]">
-          <div>
-            <div className="mb-8 text-center md:text-left">
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">
-                My Profile
-              </h2>
-              <p className="text-[#309689] font-medium text-sm">
-                Keep your professional records up to date
-              </p>
-            </div>
+          {activeTab === "personal" && (
+            <div>
+              <div className="mb-8 text-center md:text-left">
+                <h2 className="text-2xl font-bold text-gray-900 mb-1">
+                  My Profile
+                </h2>
+                <p className="text-[#309689] font-medium text-sm">
+                  Keep your professional records up to date
+                </p>
+              </div>
 
-            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-              {/* TAB 1: PERSONAL DETAILS */}
-              {activeTab === "personal" && (
+              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                {/* TAB 1: PERSONAL DETAILS */}
+
                 <div className="space-y-6 animate-fadeIn">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-1">
@@ -172,7 +172,8 @@ function Profile() {
                       </label>
                       <input
                         type="text"
-                        defaultValue="Alex Morgan"
+                        Value={userDetails.fullName}
+                        onChange={handleFormData}
                         className="w-full pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                       />
                     </div>
@@ -250,12 +251,7 @@ function Profile() {
                       className="w-full pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent resize-none"
                     />
                   </div>
-                </div>
-              )}
 
-              {/* TAB 2: EXPERIENCE & EDUCATION */}
-              {activeTab === "experience" && (
-                <div className="space-y-8 anonymity-fadeIn">
                   {/* Experience block wrapper */}
                   <div className="space-y-4">
                     <h4 className="text-sm font-bold text-neutral-800 uppercase tracking-wider flex items-center gap-2">
@@ -271,6 +267,7 @@ function Profile() {
                           type="text"
                           defaultValue="Pixel Perfect Solutions"
                           className="w-full pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
+                          required
                         />
                       </div>
                       <div className="space-y-1">
@@ -337,12 +334,7 @@ function Profile() {
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
 
-              {/* TAB 3: RESUME & SKILLS */}
-              {activeTab === "skills" && (
-                <div className="space-y-8 animate-fadeIn">
                   {/* File Upload Section */}
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-gray-400 tracking-wide uppercase block">
@@ -403,25 +395,37 @@ function Profile() {
                     </div>
                   </div>
                 </div>
-              )}
-            </form>
-          </div>
 
-          {/* Persistent Form Submission Action Bar */}
-          <div className="mt-12 pt-6 border-t border-gray-100 flex items-center justify-end gap-4">
-            <button
-              type="button"
-              className="text-sm text-gray-400 hover:text-neutral-800 font-bold transition-colors"
-            >
-              Discard Changes
-            </button>
-            <button
-              type="button"
-              className="bg-[#309689] text-white py-3 px-8 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#309689]/20"
-            >
-              SAVE PROFILE
-            </button>
-          </div>
+                <div className="mt-12 pt-6 border-t border-gray-100 flex items-center justify-end gap-4">
+                  <button
+                    type="button"
+                    className="text-sm text-gray-400 hover:text-neutral-800 font-bold transition-colors"
+                  >
+                    Discard Changes
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-[#309689] text-white py-3 px-8 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#309689]/20"
+                  >
+                    SAVE PROFILE
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
+
+          {/* TAB 2: Jobs */}
+          {activeTab === "Jobs" && (
+            <div>
+              <div className="mb-8 text-center md:text-left">
+                <h2 className="text-2xl font-bold text-gray-900 mb-1">Jobs</h2>
+                <p className="text-[#309689] font-medium text-sm">
+                  Keep your company jobs records up to date
+                </p>
+              </div>
+              <div className="space-y-8 anonymity-fadeIn"></div>
+            </div>
+          )}
         </div>
       </div>
     </div>
