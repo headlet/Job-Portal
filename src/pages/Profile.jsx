@@ -38,10 +38,8 @@ function Profile() {
     setSkills(skills.filter((_, index) => index !== indexToRemove));
   };
 
-  const [formData, setFormData] = useState({});
-  const handleFormData = (e) => {
-    e.preventDefault();
-    setFormData({...formData,[e.target.name]: e.target.value});
+  const handleUserDetails = (e) => {
+    setUserDetails({...userDetails, [e.target.name]: e.target.value});
   };
 
   useEffect(() => {
@@ -77,6 +75,11 @@ function Profile() {
       console.error("error logging out", error.message);
     }
   };
+
+  const handleSubmit = (e)=>{
+    e.preventDefault();
+    console.log(userDetails);
+  }
 
   if (loading) {
     return (
@@ -161,7 +164,7 @@ function Profile() {
                 </p>
               </div>
 
-              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 {/* TAB 1: PERSONAL DETAILS */}
 
                 <div className="space-y-6 animate-fadeIn">
@@ -172,8 +175,9 @@ function Profile() {
                       </label>
                       <input
                         type="text"
-                        Value={userDetails.fullName}
-                        onChange={handleFormData}
+                        name="fullName"
+                        value={userDetails.fullName}
+                        onChange={handleUserDetails}
                         className="w-full pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                       />
                     </div>

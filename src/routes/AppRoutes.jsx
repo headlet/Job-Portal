@@ -10,7 +10,7 @@ import Profile from "../pages/Profile";
 import Setting from "../admin/Setting";
 import PostJob from "../pages/JobPost";
 
-function AppRoutes({ jobs }) {
+function AppRoutes({ jobs, userDetails, loading }) {
   return (
     <Routes>
       <Route path="/" element={<Home jobs={jobs} />} />
@@ -20,7 +20,7 @@ function AppRoutes({ jobs }) {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/jobDetails" element={<JobDetails />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/profile" element={<Profile userDetails={userDetails} loading={loading}/>} />
       <Route path="/setting" element={<Setting />} />
       <Route path="/post_job" element={<PostJob />} />
     </Routes>
