@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   FaUser,
   FaBriefcase,
@@ -10,13 +10,19 @@ import {
   FaGlobe,
   FaMapMarkerAlt,
 } from "react-icons/fa";
-import { auth, db } from "../firebase.config";
-import { doc, getDoc } from "firebase/firestore";
+import { useAuth } from "./component/AuthContext";
 import { Navigate } from "react-router-dom";
 
 function Profile() {
   const [activeTab, setActiveTab] = useState("personal");
-  const [loading, setLoading] = useState(true);
+  const {
+    userDetails,
+    loading,
+    handleLogout,
+    setUserDetails,
+    updateUserProfile,
+  } = useAuth();
+
   const [skills, setSkills] = useState([
     "React.js",
     "Tailwind CSS",
@@ -24,7 +30,6 @@ function Profile() {
     "Firebase",
   ]);
   const [newSkill, setNewSkill] = useState("");
-  const [userDetails, setUserDetails] = useState(null);
 
   const handleAddSkill = (e) => {
     e.preventDefault();
@@ -39,47 +44,20 @@ function Profile() {
   };
 
   const handleUserDetails = (e) => {
-    setUserDetails({...userDetails, [e.target.name]: e.target.value});
+    setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        try {
-          const docRef = doc(db, "Users", user.uid);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            setUserDetails(docSnap.data());
-          } else {
-            console.log("No user document found in Firestore.");
-          }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-        }
-      } else {
-        console.log("User isn't logged in");
-        setUserDetails(null);
-      }
-      setLoading(false);
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("This is the current typed data:", userDetails);
 
-    return () => unsubscribe();
-  }, []);
-
-  const handleLogout = async () => {
     try {
-      await auth.signOut();
-      window.location.href = "/login";
-      console.log("User logged out successfully");
+      await updateUserProfile(userDetails);
+      alert("Profile updated successfully!");
     } catch (error) {
-      console.error("error logging out", error.message);
+      console.error("Failed to save data:", error);
     }
   };
-
-  const handleSubmit = (e)=>{
-    e.preventDefault();
-    console.log(userDetails);
-  }
 
   if (loading) {
     return (
@@ -187,7 +165,9 @@ function Profile() {
                       </label>
                       <input
                         type="text"
-                        defaultValue="Frontend Developer"
+                        name="professionalTitle"
+                        onChange={handleUserDetails}
+                        value={userDetails?.professionalTitle ?? "Frontend Dev"}
                         className="w-full pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                       />
                     </div>
@@ -200,7 +180,9 @@ function Profile() {
                       </label>
                       <input
                         type="email"
-                        defaultValue="alex.morgan@example.com"
+                        name="email"
+                        value={userDetails?.email ?? "alex.morgan@example.com"}
+                        onChange={handleUserDetails}
                         className="w-full pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                       />
                     </div>
@@ -210,7 +192,9 @@ function Profile() {
                       </label>
                       <input
                         type="tel"
-                        defaultValue="+1 (555) 019-2834"
+                        name="phone_no"
+                        value={userDetails?.phone_no ?? "+977-98612"}
+                        onChange={handleUserDetails}
                         className="w-full pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                       />
                     </div>
@@ -225,7 +209,9 @@ function Profile() {
                         <FaLinkedin className="absolute left-0 text-gray-400 bottom-3" />
                         <input
                           type="text"
-                          defaultValue="linkedin.com/in/alex-morgan"
+                          name="linkedin"
+                          value={userDetails?.linkedin ?? ""}
+                          onChange={handleUserDetails}
                           className="w-full pl-6 pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                         />
                       </div>
@@ -238,7 +224,9 @@ function Profile() {
                         <FaGlobe className="absolute left-0 text-gray-400 bottom-3" />
                         <input
                           type="text"
-                          defaultValue="alexmorgan.dev"
+                          name="portfolio"
+                          value={userDetails?.portfolio ?? ""}
+                          onChange={handleUserDetails}
                           className="w-full pl-6 pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                         />
                       </div>
@@ -251,7 +239,9 @@ function Profile() {
                     </label>
                     <textarea
                       rows="3"
-                      defaultValue="Passionate Frontend Developer with 3+ years of experience constructing scalable web interfaces using React, state architectures, and Tailwind CSS ecosystems."
+                      name="bio"
+                      value={userDetails?.bio ?? ""}
+                      onChange={handleUserDetails}
                       className="w-full pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent resize-none"
                     />
                   </div>
@@ -269,7 +259,9 @@ function Profile() {
                         </label>
                         <input
                           type="text"
-                          defaultValue="Pixel Perfect Solutions"
+                          name="companyName"
+                          value={userDetails?.companyName ?? ""}
+                          onChange={handleUserDetails}
                           className="w-full pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                           required
                         />
@@ -280,7 +272,9 @@ function Profile() {
                         </label>
                         <input
                           type="text"
-                          defaultValue="Mid Frontend Engineer"
+                          name="roleTitle"
+                          value={userDetails?.roleTitle ?? ""}
+                          onChange={handleUserDetails}
                           className="w-full pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                         />
                       </div>
@@ -292,7 +286,9 @@ function Profile() {
                         </label>
                         <input
                           type="text"
-                          defaultValue="Jan 2024"
+                          name="startDate"
+                          value={userDetails?.startDate ?? ""}
+                          onChange={handleUserDetails}
                           className="w-full pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                         />
                       </div>
@@ -302,7 +298,9 @@ function Profile() {
                         </label>
                         <input
                           type="text"
-                          defaultValue="Present"
+                          name="endDate"
+                          value={userDetails?.endDate ?? ""}
+                          onChange={handleUserDetails}
                           className="w-full pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                         />
                       </div>
@@ -322,7 +320,9 @@ function Profile() {
                         </label>
                         <input
                           type="text"
-                          defaultValue="State Tech University"
+                          name="institution"
+                          value={userDetails?.institution ?? ""}
+                          onChange={handleUserDetails}
                           className="w-full pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                         />
                       </div>
@@ -332,7 +332,9 @@ function Profile() {
                         </label>
                         <input
                           type="text"
-                          defaultValue="B.S. Computer Science"
+                          name="degree"
+                          value={userDetails?.degree ?? ""}
+                          onChange={handleUserDetails}
                           className="w-full pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
                         />
                       </div>
