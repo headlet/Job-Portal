@@ -1,19 +1,18 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "../assets/Logo.png";
-
+import { useAuth } from "../pages/component/AuthContext";
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const { userDetails } = useAuth();
   const linkClass = ({ isActive }) =>
     `px-3 py-1 rounded-lg transition-colors duration-200 hover:bg-[#309689] ${
       isActive ? "bg-[#1f7a6d]" : ""
     }`;
-
+  console.log("Current userDetails in Nav:", userDetails);
   return (
     <header className="bg-black text-white">
       <nav className="max-w-7xl mx-auto flex justify-between items-center py-4 px-3 md:px-3 lg:px-1 ">
-        
         {/* Logo */}
         <NavLink to="/" className="flex items-center gap-2">
           <img src={Logo} alt="Logo" className="w-6 h-6" />
@@ -22,19 +21,38 @@ function NavBar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-7">
-          <NavLink to="/" className={linkClass}>Home</NavLink>
-          <NavLink to="/about" className={linkClass}>About</NavLink>
-          <NavLink to="/contact" className={linkClass}>Contact</NavLink>
-          <NavLink to="/jobs" className={linkClass}>Jobs</NavLink>
+          <NavLink to="/" className={linkClass}>
+            Home
+          </NavLink>
+          <NavLink to="/about" className={linkClass}>
+            About
+          </NavLink>
+          <NavLink to="/contact" className={linkClass}>
+            Contact
+          </NavLink>
+          <NavLink to="/jobs" className={linkClass}>
+            Jobs
+          </NavLink>
         </div>
 
         {/* Desktop Login */}
-        <NavLink
-          to="/login"
-          className="hidden md:block bg-[#309689] px-4 py-2 rounded-lg hover:bg-green-700"
-        >
-          Login
-        </NavLink>
+        <div>
+          {userDetails ? (
+            <NavLink
+              to="/profile"
+              className="hidden md:block bg-[#309689] text-white px-4 py-2 rounded-lg hover:bg-green-700 font-semibold transition-colors"
+            >
+              My Profile
+            </NavLink>
+          ) : (
+            <NavLink
+              to="/login"
+              className="hidden md:block bg-[#309689] text-white px-4 py-2 rounded-lg hover:bg-green-700 font-semibold transition-colors"
+            >
+              Login
+            </NavLink>
+          )}
+        </div>
 
         {/* Mobile Hamburger */}
         <button
@@ -47,33 +65,59 @@ function NavBar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-black border-t border-gray-800">
+        <div className="md:hidden bg-black border-t border-gray-800 text-center">
           <div className="flex flex-col p-4 gap-3">
-            
-            <NavLink to="/" className={linkClass} onClick={() => setIsOpen(false)}>
+            <NavLink
+              to="/"
+              className={linkClass}
+              onClick={() => setIsOpen(false)}
+            >
               Home
             </NavLink>
 
-            <NavLink to="/about" className={linkClass} onClick={() => setIsOpen(false)}>
+            <NavLink
+              to="/about"
+              className={linkClass}
+              onClick={() => setIsOpen(false)}
+            >
               About
             </NavLink>
 
-            <NavLink to="/contact" className={linkClass} onClick={() => setIsOpen(false)}>
+            <NavLink
+              to="/contact"
+              className={linkClass}
+              onClick={() => setIsOpen(false)}
+            >
               Contact
             </NavLink>
 
-            <NavLink to="/jobs" className={linkClass} onClick={() => setIsOpen(false)}>
+            <NavLink
+              to="/jobs"
+              className={linkClass}
+              onClick={() => setIsOpen(false)}
+            >
               Jobs
             </NavLink>
 
-            <NavLink
-              to="/login"
-              className="bg-[#309689] px-4 py-2 rounded-lg text-center hover:bg-green-700"
-              onClick={() => setIsOpen(false)}
-            >
-              Login
-            </NavLink>
-
+            <div className="w-full ">
+              {userDetails ? (
+                <NavLink
+                  to="/profile"
+                  className="bg-[#309689] px-4 py-2 rounded-lg text-center hover:bg-green-700"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Profile
+                </NavLink>
+              ) : (
+                <NavLink
+                  to="/login"
+                  className="bg-[#309689] px-4 py-2 rounded-lg text-center hover:bg-green-700"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Login
+                </NavLink>
+              )}
+            </div>
           </div>
         </div>
       )}

@@ -35,6 +35,7 @@ function Signup() {
           role: formData.role
         })
       }
+      window.location.href = '/login';
      toast.success('User Registered Successfully!!', {
       position: "top-right"
      });
