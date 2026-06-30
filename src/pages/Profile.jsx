@@ -16,6 +16,8 @@ import {
 import { useAuth } from "./component/AuthContext";
 import { Navigate } from "react-router-dom";
 
+
+
 function Profile({ jobs }) {
   const [activeTab, setActiveTab] = useState("personal");
   const {

@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [userDetails, setUserDetails] = useState(null);
 
-//   update user
+  //   update user
   const updateUserProfile = async (updatedData) => {
     if (!auth.currentUser) return;
 
@@ -24,10 +24,11 @@ export const AuthProvider = ({ children }) => {
       console.log("Profile updated successfully in database!");
     } catch (error) {
       console.error("Error updating user profile:", error);
-      throw error; 
+      throw error;
     }
   };
 
+  // get data
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -56,7 +57,7 @@ export const AuthProvider = ({ children }) => {
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      window.location.href = "/login";
+      setUserDetails(null);
       console.log("User logged out successfully");
     } catch (error) {
       console.error("error logging out", error.message);
@@ -64,8 +65,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ userDetails, setUserDetails, loading, handleLogout, updateUserProfile }}>
-      {!loading && children}
+    <AuthContext.Provider
+      value={{
+        userDetails,
+        setUserDetails,
+        loading,
+        handleLogout,
+        updateUserProfile,
+      }}
+    >
+      {children}
     </AuthContext.Provider>
   );
 };

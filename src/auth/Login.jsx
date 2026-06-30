@@ -1,7 +1,8 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { auth } from "../firebase.config";
+import { useAuth } from "../pages/component/AuthContext";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -19,6 +20,16 @@ function Login() {
     }
   };
 
+  const { userDetails, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading authentication...</div>;
+  }
+
+  if (userDetails) {
+    return <Navigate to="/profile" replace />;
+  }
+  
   return (
     <div className="min-h-screen bg-neutral-100 flex items-center justify-center p-4 md:p-8">
       <div className="w-full max-w-[1000px] bg-white rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] overflow-hidden grid md:grid-cols-2">
