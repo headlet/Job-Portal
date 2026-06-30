@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   FaUser,
   FaBriefcase,
@@ -9,11 +9,14 @@ import {
   FaLinkedin,
   FaGlobe,
   FaMapMarkerAlt,
+  FaRegClock,
+  FaMoneyBillWave,
+  FaCamera,
 } from "react-icons/fa";
 import { useAuth } from "./component/AuthContext";
 import { Navigate } from "react-router-dom";
 
-function Profile() {
+function Profile({ jobs }) {
   const [activeTab, setActiveTab] = useState("personal");
   const {
     userDetails,
@@ -23,24 +26,60 @@ function Profile() {
     updateUserProfile,
   } = useAuth();
 
-  const [skills, setSkills] = useState([
-    "React.js",
-    "Tailwind CSS",
-    "JavaScript",
-    "Firebase",
-  ]);
   const [newSkill, setNewSkill] = useState("");
+  const currentSkills = Array.isArray(userDetails?.skill)
+    ? userDetails.skill
+    : userDetails?.skill
+      ? [userDetails.skill]
+      : [];
 
   const handleAddSkill = (e) => {
     e.preventDefault();
-    if (newSkill.trim() && !skills.includes(newSkill.trim())) {
-      setSkills([...skills, newSkill.trim()]);
+    const trimmed = newSkill.trim();
+
+    if (trimmed && !currentSkills.includes(trimmed)) {
+      const updatedSkills = [...currentSkills, trimmed];
+      handleUserDetails({
+        target: {
+          name: "skill",
+          value: updatedSkills,
+        },
+      });
+
       setNewSkill("");
     }
   };
 
   const handleRemoveSkill = (indexToRemove) => {
-    setSkills(skills.filter((_, index) => index !== indexToRemove));
+    const updatedSkills = currentSkills.filter(
+      (_, index) => index !== indexToRemove,
+    );
+
+    handleUserDetails({
+      target: {
+        name: "skill",
+        value: updatedSkills,
+      },
+    });
+  };
+
+  const fileInputRef = useRef(null);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+     
+        handleUserDetails({
+          target: {
+            name: "profileImage",
+            value: reader.result, 
+          },
+        });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleUserDetails = (e) => {
@@ -77,11 +116,33 @@ function Profile() {
         <div className="p-8 bg-black text-white flex flex-col justify-between relative md:col-span-1">
           <div className="relative z-10">
             <div className="flex flex-col items-center text-center mb-8">
-              <div className="relative group w-28 h-28 bg-neutral-800 rounded-full border-2 border-[#309689] flex items-center justify-center overflow-hidden cursor-pointer transition-all">
-                <FaUser className="text-4xl text-neutral-400 group-hover:opacity-30 transition-opacity" />
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-xs transition-opacity text-white font-medium">
-                  <FaCloudUploadAlt className="text-xl text-[#309689] mb-1" />
-                  Change
+              <div className="flex flex-col items-center text-center mb-8">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleImageChange}
+                  accept="image/*"
+                  className="hidden"
+                />
+
+                <div
+                  onClick={() => fileInputRef.current.click()}
+                  className="relative group w-28 h-28 bg-neutral-800 rounded-full border-2 border-[#309689] flex items-center justify-center overflow-hidden cursor-pointer transition-all"
+                >
+                  {userDetails?.profileImage ? (
+                    <img
+                      src={userDetails.profileImage}
+                      alt="Profile"
+                      className="w-full h-full object-cover transition-opacity group-hover:opacity-40"
+                    />
+                  ) : (
+                    <FaUser className="text-4xl text-neutral-400 group-hover:opacity-30 transition-opacity" />
+                  )}
+
+                  {/* Hover overlay indicator */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+                    <FaCamera className="text-white text-xl" />
+                  </div>
                 </div>
               </div>
               <h2 className="mt-4 text-xl font-bold">
@@ -107,16 +168,18 @@ function Profile() {
                 <FaUser className="text-base" /> Personal Details
               </button>
 
-              <button
-                onClick={() => setActiveTab("Jobs")}
-                className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                  activeTab === "Jobs"
-                    ? "bg-[#309689] text-white shadow-lg shadow-[#309689]/20"
-                    : "text-neutral-400 hover:bg-neutral-900 hover:text-white"
-                }`}
-              >
-                <FaBriefcase className="text-base" /> Jobs
-              </button>
+              {userDetails?.role === "employer" && (
+                <button
+                  onClick={() => setActiveTab("Jobs")}
+                  className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                    activeTab === "Jobs"
+                      ? "bg-[#309689] text-white shadow-lg shadow-[#309689]/20"
+                      : "text-neutral-400 hover:bg-neutral-900 hover:text-white"
+                  }`}
+                >
+                  <FaBriefcase className="text-base" /> Jobs
+                </button>
+              )}
             </nav>
           </div>
 
@@ -346,14 +409,34 @@ function Profile() {
                     <label className="text-xs font-bold text-gray-400 tracking-wide uppercase block">
                       Attached Resume (PDF)
                     </label>
+
                     <div className="border-2 border-dashed border-gray-200 hover:border-[#309689] transition-colors rounded-2xl p-6 text-center cursor-pointer bg-neutral-50/50 flex flex-col items-center justify-center gap-2 group">
                       <FaCloudUploadAlt className="text-3xl text-gray-400 group-hover:text-[#309689] transition-colors" />
                       <span className="text-sm font-bold text-neutral-700">
-                        Upload New CV / Resume
+                        {userDetails.resume
+                          ? "Change CV / Resume"
+                          : "Upload New CV / Resume"}
                       </span>
-                      <span className="text-xs text-gray-400">
-                        PDF formats supported up to 5MB
-                      </span>
+                      <input
+                        type="url"
+                        name="resume"
+                        onChange={handleUserDetails}
+                        value={userDetails.resume}
+                        placeholder="https://google.com..."
+                        className="w-full pb-2 border-b-2 border-gray-200 text-neutral-800 placeholder-gray-400 focus:outline-none focus:border-[#309689] transition-all bg-transparent"
+                      />
+
+                      <a
+                        href={userDetails.resume}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()} // Prevents the file dialog picker from popping up when clicking the link
+                        className="mt-2 px-3 py-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors rounded-lg text-xs font-medium max-w-xs truncate border border-emerald-200 flex items-center gap-1.5 dynamic-link"
+                      >
+                        {userDetails.resume
+                          ? "📄 View Current Resume ↗"
+                          : "No Resume"}
+                      </a>
                     </div>
                   </div>
 
@@ -384,7 +467,7 @@ function Profile() {
 
                     {/* Skill Tags Container */}
                     <div className="flex flex-wrap gap-2 mt-4">
-                      {skills.map((skill, index) => (
+                      {currentSkills.map((skill, index) => (
                         <span
                           key={index}
                           className="flex items-center gap-2 px-3.5 py-1.5 bg-[#309689]/5 border border-[#309689]/20 text-[#309689] rounded-xl text-xs font-bold group select-none"
@@ -429,7 +512,71 @@ function Profile() {
                   Keep your company jobs records up to date
                 </p>
               </div>
-              <div className="space-y-8 anonymity-fadeIn"></div>
+              <div className="space-y-8 anonymity-fadeIn">
+                <div className="w-full px-2 sm:px-3 lg:px-4 max-w-7xl mx-auto">
+                  {/* Jobs Feed Stack */}
+                  <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-4">
+                      {jobs.map((job) => (
+                        <div
+                          key={job.id}
+                          className="bg-white border border-neutral-100 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow relative group"
+                        >
+                          {/* Top Badge */}
+                          <span className="inline-block bg-[#309689]/10 text-[#309689] text-[10px] font-bold px-2.5 py-1 rounded mb-4">
+                            {job.posted}
+                          </span>
+
+                          <div className="flex flex-col sm:flex-row gap-5">
+                            {/* Abstract Logo */}
+                            <div
+                              className={`w-12 h-12 ${job.logoBg} rounded-full flex items-center justify-center text-white shrink-0 shadow-inner`}
+                            >
+                              <FaBriefcase className="text-lg" />
+                            </div>
+
+                            <div className="flex-1">
+                              <h3 className="text-lg font-bold text-neutral-800 group-hover:text-[#309689] transition-colors mb-1">
+                                {job.title}
+                              </h3>
+                              <p className="text-sm text-neutral-500 mb-4">
+                                {job.company}
+                              </p>
+
+                              {/* Meta Info Row */}
+                              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-neutral-500 font-medium">
+                                <span className="flex items-center gap-1.5">
+                                  <FaBriefcase className="text-[#309689]" />{" "}
+                                  {job.category}
+                                </span>
+                                <span className="flex items-center gap-1.5">
+                                  <FaRegClock className="text-[#309689]" />{" "}
+                                  {job.type}
+                                </span>
+                                <span className="flex items-center gap-1.5">
+                                  <FaMoneyBillWave className="text-[#309689]" />{" "}
+                                  {job.salary}
+                                </span>
+                                <span className="flex items-center gap-1.5">
+                                  <FaMapMarkerAlt className="text-[#309689]" />{" "}
+                                  {job.location}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Apply Button */}
+                            <div className="flex items-end sm:items-center mt-4 sm:mt-0 shrink-0">
+                              <button className="bg-[#309689] hover:bg-teal-700 text-white text-xs font-semibold px-6 py-2.5 rounded-lg transition-colors">
+                                Job Details
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>

@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [userDetails, setUserDetails] = useState(null);
 
-  //   update user
+//   update user
   const updateUserProfile = async (updatedData) => {
     if (!auth.currentUser) return;
 
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
       console.log("Profile updated successfully in database!");
     } catch (error) {
       console.error("Error updating user profile:", error);
-      throw error;
+      throw error; 
     }
   };
 
@@ -64,15 +64,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        userDetails,
-        setUserDetails,
-        loading,
-        handleLogout,
-        updateUserProfile,
-      }}
-    >
+    <AuthContext.Provider value={{ userDetails, setUserDetails, loading, handleLogout, updateUserProfile }}>
       {!loading && children}
     </AuthContext.Provider>
   );

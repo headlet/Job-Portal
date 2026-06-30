@@ -1,4 +1,3 @@
-import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { FaBuilding, FaCheckCircle, FaLayerGroup } from "react-icons/fa";
 import { db } from "../firebase.config";
